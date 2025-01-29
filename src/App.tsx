@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import 'bulma/css/bulma.css';
 import './App.scss';
 
@@ -16,24 +16,27 @@ export const goodsFromServer = [
 ];
 
 enum SortField {
-  length = 'lenght',
-  alphabet = 'alphabet'
+  Length = 'length',
+  Alphabet = 'alphabet',
 }
 
 type ReorderOption = {
   sortField: string;
-  reverseFields: boolean | string;
-}
+  reverseFields: boolean;
+};
 
-function getPreparedGoods(goods: string[],{ sortField, reverseFields }:ReorderOption) {
+function getPreparedGoods(
+  goods: string[],
+  { sortField, reverseFields }: ReorderOption,
+) {
   const prepGoods = [...goods];
 
   if (sortField) {
     prepGoods.sort((good1, good2) => {
       switch (sortField) {
-        case SortField.alphabet:
+        case SortField.Alphabet:
           return good1.localeCompare(good2);
-        case SortField.length:
+        case SortField.Length:
           return good1.length - good2.length;
         default:
           return 0;
@@ -52,13 +55,10 @@ export const App: React.FC = () => {
   const [sortField, setSortField] = useState('');
   const [reverseFields, setReverse] = useState(false);
   const [reset, setReset] = useState(false);
-  const goods = getPreparedGoods(
-    goodsFromServer,
-    {
-      sortField,
-      reverseFields
-    },
-  );
+  const goods = getPreparedGoods(goodsFromServer, {
+    sortField,
+    reverseFields,
+  });
 
   return (
     <div className="section content">
@@ -66,12 +66,12 @@ export const App: React.FC = () => {
         <button
           type="button"
           className={
-            sortField === SortField.alphabet
+            sortField === SortField.Alphabet
               ? 'button'
               : 'button is-info is-light'
           }
           onClick={() => {
-            setSortField(SortField.alphabet);
+            setSortField(SortField.Alphabet);
             setReset(true);
           }}
         >
@@ -81,12 +81,12 @@ export const App: React.FC = () => {
         <button
           type="button"
           className={
-            sortField === SortField.length
+            sortField === SortField.Length
               ? 'button'
               : 'button is-info is-light'
           }
           onClick={() => {
-            setSortField(SortField.length);
+            setSortField(SortField.Length);
             setReset(true);
           }}
         >
@@ -97,7 +97,7 @@ export const App: React.FC = () => {
           type="button"
           className={reverseFields ? 'button' : 'button is-info is-light'}
           onClick={() => {
-            setReverse((prevreverseFields) => !prevreverseFields);
+            setReverse(prevreverseFields => !prevreverseFields);
             setReset(prevReset => (sortField ? true : !prevReset));
           }}
         >
